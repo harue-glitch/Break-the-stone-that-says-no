@@ -1,0 +1,351 @@
+/* ===================================
+   ダメだ石をぶっ壊せ！ - スタイルシート
+   優しく美しい世界観のデザイン
+   =================================== */
+
+/* CSS Variables - カラーパレット */
+:root {
+    /* 心の暗い状態（開始時） */
+    --bg-dark-start: #0a0a1a;
+    --bg-dark-end: #1a1a2e;
+
+    /* 心の明るい状態（成長時） */
+    --bg-light-start: #667eea;
+    --bg-light-end: #f8a5c2;
+
+    /* アクセントカラー */
+    --primary-glow: #a29bfe;
+    --secondary-glow: #fd79a8;
+    --gold: #ffeaa7;
+    --gem-purple: #a55eea;
+    --gem-blue: #74b9ff;
+    --gem-pink: #ff7675;
+
+    /* テキスト */
+    --text-light: #ffffff;
+    --text-soft: rgba(255, 255, 255, 0.8);
+
+    /* シャドウ */
+    --glow-shadow: 0 0 30px rgba(162, 155, 254, 0.5);
+
+    /* フォント */
+    --font-main: 'Zen Maru Gothic', sans-serif;
+}
+
+/* リセット */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    font-family: var(--font-main);
+    background: linear-gradient(135deg, var(--bg-dark-start), var(--bg-dark-end));
+    transition: background 2s ease;
+}
+
+/* ゲームコンテナ */
+#game-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+/* 画面共通 */
+.screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.8s ease, visibility 0.8s ease;
+}
+
+.screen.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+/* ===================================
+   スタート画面
+   =================================== */
+#start-screen {
+    background: radial-gradient(ellipse at center, rgba(102, 126, 234, 0.1) 0%, transparent 70%);
+}
+
+.title-wrapper {
+    text-align: center;
+    margin-bottom: 3rem;
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.game-title {
+    font-size: clamp(2rem, 8vw, 4rem);
+    font-weight: 700;
+    color: var(--text-light);
+    text-shadow:
+        0 0 20px rgba(162, 155, 254, 0.8),
+        0 0 40px rgba(162, 155, 254, 0.4),
+        0 0 60px rgba(162, 155, 254, 0.2);
+    line-height: 1.4;
+    letter-spacing: 0.05em;
+}
+
+.game-title ruby rt {
+    font-size: 0.4em;
+    color: var(--text-soft);
+}
+
+.subtitle {
+    font-size: clamp(0.9rem, 3vw, 1.2rem);
+    color: var(--text-soft);
+    margin-top: 1rem;
+    letter-spacing: 0.1em;
+}
+
+.subtitle ruby rt {
+    font-size: 0.6em;
+}
+
+/* ボタン */
+.glow-button {
+    font-family: var(--font-main);
+    font-size: clamp(1.2rem, 4vw, 1.5rem);
+    font-weight: 500;
+    padding: 1rem 3rem;
+    border: none;
+    border-radius: 50px;
+    background: linear-gradient(135deg, var(--primary-glow), var(--secondary-glow));
+    color: var(--text-light);
+    cursor: pointer;
+    box-shadow: var(--glow-shadow);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.glow-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.5s ease;
+}
+
+.glow-button:hover::before {
+    left: 100%;
+}
+
+.glow-button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 50px rgba(162, 155, 254, 0.7);
+}
+
+.glow-button:active {
+    transform: scale(0.98);
+}
+
+.instruction {
+    font-size: clamp(0.8rem, 2.5vw, 1rem);
+    color: var(--text-soft);
+    margin-top: 2rem;
+    opacity: 0.7;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 0.5;
+    }
+
+    50% {
+        opacity: 1;
+    }
+}
+
+/* ===================================
+   ゲーム画面
+   =================================== */
+#game-screen {
+    padding: 0;
+}
+
+#game-canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+    touch-action: none;
+}
+
+/* UIオーバーレイ */
+#ui-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 1rem;
+    pointer-events: none;
+}
+
+#exp-container {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    right: 1rem;
+    /* 右側も指定して幅を自動調整 */
+    width: auto;
+    max-width: 400px;
+    margin: 0;
+    z-index: 100;
+    /* 最前面に */
+}
+
+#exp-bar {
+    width: 100%;
+    height: 12px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+#exp-fill {
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary-glow), var(--secondary-glow), var(--gold));
+    border-radius: 10px;
+    transition: width 0.3s ease;
+    box-shadow: 0 0 10px var(--primary-glow);
+}
+
+#exp-text {
+    display: block;
+    text-align: center;
+    font-size: 0.8rem;
+    color: var(--text-soft);
+    margin-top: 0.3rem;
+}
+
+/* ===================================
+   クリア画面
+   =================================== */
+#clear-screen {
+    background: radial-gradient(ellipse at center, rgba(248, 165, 194, 0.3) 0%, transparent 70%);
+}
+
+.clear-content {
+    text-align: center;
+    animation: fadeInUp 1s ease;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.clear-title {
+    font-size: clamp(1.8rem, 6vw, 3rem);
+    font-weight: 700;
+    color: var(--text-light);
+    text-shadow:
+        0 0 20px rgba(253, 121, 168, 0.8),
+        0 0 40px rgba(253, 121, 168, 0.4);
+    margin-bottom: 1rem;
+}
+
+.clear-message {
+    font-size: clamp(1rem, 3vw, 1.3rem);
+    color: var(--text-soft);
+    margin-bottom: 2rem;
+}
+
+#flower-display {
+    width: 200px;
+    height: 200px;
+    margin: 0 auto 2rem;
+    position: relative;
+}
+
+/* ===================================
+   レスポンシブ対応
+   =================================== */
+
+/* タブレット */
+@media (max-width: 768px) {
+    .glow-button {
+        padding: 0.8rem 2.5rem;
+    }
+
+    .title-wrapper {
+        margin-bottom: 2rem;
+    }
+}
+
+/* スマートフォン */
+@media (max-width: 480px) {
+    .glow-button {
+        padding: 0.7rem 2rem;
+    }
+
+    #ui-overlay {
+        padding: 0.5rem;
+    }
+
+    #exp-bar {
+        height: 10px;
+    }
+}
+
+/* 横向きスマートフォン */
+@media (max-height: 500px) and (orientation: landscape) {
+    .title-wrapper {
+        margin-bottom: 1rem;
+    }
+
+    .game-title {
+        font-size: 2rem;
+    }
+
+    .subtitle {
+        margin-top: 0.5rem;
+    }
+
+    .instruction {
+        margin-top: 1rem;
+    }
+}
