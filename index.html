@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="description" content="心の中に降ってくるダメだ石を光で壊して、心の殻を破るヒーリングゲーム">
+    <title>ダメだ<ruby>石<rt>いし</rt></ruby>をぶっ<ruby>壊<rt>こわ</rt></ruby>せ！</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="game-container">
+        <!-- スタート画面 -->
+        <div id="start-screen" class="screen">
+            <div class="title-wrapper">
+                <h1 class="game-title">
+                    <ruby>ダメだ<rt></rt></ruby><ruby>石<rt>いし</rt></ruby>を<br>
+                    ぶっ<ruby>壊<rt>こわ</rt></ruby>せ！
+                </h1>
+                <p class="subtitle">
+                    <ruby>心<rt>こころ</rt></ruby>の<ruby>殻<rt>から</rt></ruby>を<ruby>破<rt>やぶ</rt></ruby>り、<ruby>花<rt>はな</rt></ruby>を<ruby>咲<rt>さ</rt></ruby>かせよう
+                </p>
+            </div>
+            <button id="start-button" class="glow-button">
+                <ruby>始<rt>はじ</rt></ruby>める
+            </button>
+            <p class="instruction">
+                <ruby>画面<rt>がめん</rt></ruby>をタップして<ruby>光<rt>ひかり</rt></ruby>を<ruby>放<rt>はな</rt></ruby>とう
+            </p>
+        </div>
+
+        <!-- ゲーム画面 -->
+        <div id="game-screen" class="screen hidden">
+            <canvas id="game-canvas"></canvas>
+            <div id="ui-overlay">
+                <div id="exp-container">
+                    <div id="exp-bar">
+                        <div id="exp-fill"></div>
+                    </div>
+                    <span id="exp-text"><ruby>経験値<rt>けいけんち</rt></ruby></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- クリア画面 -->
+        <div id="clear-screen" class="screen hidden">
+            <div class="clear-content">
+                <h2 class="clear-title">
+                    <ruby>心<rt>こころ</rt></ruby>の<ruby>殻<rt>から</rt></ruby>が<ruby>破<rt>やぶ</rt></ruby>れた！
+                </h2>
+                <p class="clear-message">
+                    あなたの<ruby>心<rt>こころ</rt></ruby>に<ruby>美<rt>うつく</rt></ruby>しい<ruby>花<rt>はな</rt></ruby>が<ruby>咲<rt>さ</rt></ruby>きました
+                </p>
+                <div id="flower-display"></div>
+                <button id="restart-button" class="glow-button">
+                    もう<ruby>一度<rt>いちど</rt></ruby>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>
